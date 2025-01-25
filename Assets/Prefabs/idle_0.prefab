@@ -132,6 +132,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   sprintMultiplier: 1.5
+  invincibilityDuration: 0.5
+  flashInterval: 0.1
 --- !u!70 &6190753174942227021
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

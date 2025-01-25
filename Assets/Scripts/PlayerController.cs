@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,10 +13,16 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 originalVelocity; // 用于保存强攻击前的速度
 
+    public float invincibilityDuration = 1.0f;
+    public float flashInterval = 0.1f; // 闪烁的间隔时间
+    private bool isInvincible = false; // 是否处于无敌状态
+    private SpriteRenderer spriteRenderer; // 角色的 SpriteRenderer
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>(); // 获取 Animator 组件
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -80,7 +87,7 @@ public class PlayerController : MonoBehaviour
             // 保存当前速度并冻结角色
             originalVelocity = rb.linearVelocity;
             rb.linearVelocity = Vector2.zero;
-            rb.isKinematic = true; // 暂停物理模拟
+            rb.bodyType = RigidbodyType2D.Kinematic; // 暂停物理模拟
 
             animator.Play("strongattack_anim"); // 播放强攻击动画
 
@@ -94,7 +101,7 @@ public class PlayerController : MonoBehaviour
         isStrongAttacking = false; // 解除强攻击状态
 
         // 恢复物理模拟和原速度
-        rb.isKinematic = false;
+        rb.bodyType = RigidbodyType2D.Dynamic;
         rb.linearVelocity = originalVelocity;
     }
 
@@ -118,5 +125,31 @@ public class PlayerController : MonoBehaviour
         {
             animator.Play("idle_anim"); // 播放静止动画
         }
+    }
+    public void TakeDamage()
+    {
+        if (isInvincible)
+            return; // 如果无敌状态，不执行受伤逻辑
+
+        // 开启无敌状态
+        StartCoroutine(InvincibilityCoroutine());
+    }
+
+    private IEnumerator InvincibilityCoroutine()
+    {
+        isInvincible = true;
+
+        // 开始闪烁
+        float elapsedTime = 0;
+        while (elapsedTime < invincibilityDuration)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled; // 切换可见性
+            elapsedTime += flashInterval;
+            yield return new WaitForSeconds(flashInterval);
+        }
+
+        // 恢复正常状态
+        spriteRenderer.enabled = true; // 确保最后是可见的
+        isInvincible = false;
     }
 }

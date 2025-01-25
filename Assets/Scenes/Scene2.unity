@@ -547,11 +547,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a7d6d48d8cff044a3b651a4cf5e1c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meteorPrefab: {fileID: 3547769826878780498}
-  spawnInterval: 2
+  meteorPrefab: {fileID: 6836967187065457310, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
+  minSpawnInterval: 1
+  maxSpawnInterval: 3
   moveSpeed: 5
-  minMeteors: 1
-  maxMeteors: 5
+  maxMeteorsOnScreen: 3
 --- !u!1 &1974965401
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,72 +686,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1001 &3547769826878780497
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2219030340216040482, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6836967187065457310, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_Name
-      value: Shooting star_0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8424621647999744433, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
---- !u!1 &3547769826878780498 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6836967187065457310, guid: 6bff70ce170bca54a9786493a8695409, type: 3}
-  m_PrefabInstance: {fileID: 3547769826878780497}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7819564993610771983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -804,6 +738,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: idle_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6190753174942227021, guid: c5b1073dddc74534589edd313ecad7ef, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7643826613066314850, guid: c5b1073dddc74534589edd313ecad7ef, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -819,4 +761,3 @@ SceneRoots:
   - {fileID: 805560755}
   - {fileID: 1974965404}
   - {fileID: 836541950}
-  - {fileID: 3547769826878780497}

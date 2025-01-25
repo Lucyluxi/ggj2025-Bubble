@@ -1,62 +1,78 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class MeteorSpawner : MonoBehaviour
 {
     public GameObject meteorPrefab; // 流星的预制体
-    public float spawnInterval = 2.0f; // 生成间隔时间
-    public float moveSpeed = 5.0f; // 流星的水平移动速度
+    public float minSpawnInterval = 0.5f; // 最短生成间隔时间
+    public float maxSpawnInterval = 1.5f; // 最长生成间隔时间
+    public float moveSpeed = 10.0f; // 流星的水平移动速度
 
-    public int minMeteors = 1; // 每次最少生成的流星数量
-    public int maxMeteors = 5; // 每次最多生成的流星数量
+    public int maxMeteorsOnScreen = 3; // 同时存在的最大流星数量
 
     private Camera mainCamera; // 主摄像机
+    private int currentMeteorCount = 0; // 当前存在的流星数量
 
     private void Start()
     {
-        // 检查是否绑定了 MeteorPrefab
-        if (meteorPrefab == null)
-        {
-            Debug.LogError("Meteor Prefab is not assigned in the Inspector! Please assign a valid prefab.");
-            enabled = false; // 禁用脚本，防止后续错误
-            return;
-        }
-
         // 获取主摄像机
         mainCamera = Camera.main;
 
-        // 定时调用生成流星的方法
-        InvokeRepeating(nameof(SpawnMeteors), 1.0f, spawnInterval);
+        // 开始生成流星
+        StartCoroutine(SpawnMeteorRoutine());
     }
 
-    void SpawnMeteors()
+    private IEnumerator SpawnMeteorRoutine()
     {
-        // 随机决定本次生成的流星数量
-        int meteorCount = Random.Range(minMeteors, maxMeteors + 1);
-
-        for (int i = 0; i < meteorCount; i++)
+        while (true)
         {
-            // 动态计算相机的可视范围
-            Vector2 spawnPosition = GetRandomSpawnPosition();
+            // 随机生成间隔时间
+            float spawnInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
 
-            // 创建流星对象
-            GameObject meteor = Instantiate(meteorPrefab, spawnPosition, Quaternion.identity);
-
-            // 调整流星为横向
-            meteor.transform.rotation = Quaternion.Euler(0, 0, -90); // 旋转 90 度
-
-            // 设置流星的水平飞行速度
-            Rigidbody2D rb = meteor.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            // 如果当前流星数量少于最大限制，则生成流星
+            if (currentMeteorCount < maxMeteorsOnScreen)
             {
-                rb.linearVelocity = new Vector2(-moveSpeed, 0); // 水平向左移动
+                SpawnMeteor();
             }
 
-            // 自动销毁流星以防资源泄露
-            Destroy(meteor, 5.0f); // 5 秒后销毁
+            // 等待一段时间再生成
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 
-    Vector2 GetRandomSpawnPosition()
+    private void SpawnMeteor()
+    {
+        // 动态计算相机的可视范围
+        Vector2 spawnPosition = GetRandomSpawnPosition();
+
+        // 创建流星对象
+        GameObject meteor = Instantiate(meteorPrefab, spawnPosition, Quaternion.identity);
+
+        // 调整流星为横向
+        meteor.transform.rotation = Quaternion.Euler(0, 0, -90); // 旋转 90 度
+
+        // 设置流星的水平飞行速度
+        Rigidbody2D rb = meteor.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = new Vector2(-moveSpeed, 0); // 水平向左移动
+        }
+
+        // 增加当前流星计数
+        currentMeteorCount++;
+
+        // 自动销毁流星并减少计数
+        Destroy(meteor, 5.0f);
+        StartCoroutine(RemoveMeteorAfterDelay(5.0f)); // 确保计数减少同步
+    }
+
+    private IEnumerator RemoveMeteorAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        currentMeteorCount--; // 减少流星计数
+    }
+
+    private Vector2 GetRandomSpawnPosition()
     {
         // 获取相机的边界（世界坐标）
         float cameraHeight = mainCamera.orthographicSize * 2;

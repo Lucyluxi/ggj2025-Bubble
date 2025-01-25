@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3899610648174346846}
   - component: {fileID: 8387965252560105063}
   - component: {fileID: 8424621647999744433}
+  - component: {fileID: 1008089854175882006}
   m_Layer: 0
   m_Name: Shooting star_0
   m_TagString: Untagged
@@ -146,10 +147,22 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.17, y: 0.68}
   m_Direction: 0
+--- !u!114 &1008089854175882006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836967187065457310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa6cbf4167d76745b6288012a7218b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
