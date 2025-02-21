@@ -160,18 +160,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     public void TakeDamage()
     {
         life--;
-        Debug.Log("当前生命值: " + life);
         UpdateLifeUI(); // 更新 TMP 显示
+
+        if (life <= 0)
+        {
+            EndGame();
+        }
 
         if (isInvincible)
             return; // 如果无敌状态，不执行受伤逻辑
 
         // 开启无敌状态
         StartCoroutine(InvincibilityCoroutine());
+    }
+
+    void EndGame()
+    {
+        if (life <= 0)
+        {
+            Debug.Log("Game Over！");
+            Time.timeScale = 0; // 暂停游戏
+        }
     }
 
     void UpdateLifeUI()

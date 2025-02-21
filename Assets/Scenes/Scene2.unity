@@ -403,11 +403,10 @@ GameObject:
   - component: {fileID: 555916259}
   - component: {fileID: 555916258}
   - component: {fileID: 555916261}
-  - component: {fileID: 555916262}
   - component: {fileID: 555916263}
   - component: {fileID: 555916264}
+  - component: {fileID: 555916262}
   - component: {fileID: 555916265}
-  - component: {fileID: 555916266}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -608,18 +607,7 @@ MonoBehaviour:
   strongSuctionKey: 13
   strongAttackDuration: 1.2
   score: 0
---- !u!114 &555916266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555916257}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 258cd3d07fbcb224db2b8bee0ddd190a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  scoreText: {fileID: 274267097}
 --- !u!1 &591331351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,11 +1514,11 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 1885658754}
   - {fileID: 555916259}
-  - {fileID: 1974965404}
   - {fileID: 726448259}
+  - {fileID: 1074047737}
+  - {fileID: 1974965404}
   - {fileID: 1394482613}
   - {fileID: 591331354}
-  - {fileID: 1074047737}
-  - {fileID: 1885658754}
   - {fileID: 1206089059}

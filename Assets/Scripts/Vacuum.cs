@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class Vacuum : MonoBehaviour
 {
@@ -14,9 +15,12 @@ public class Vacuum : MonoBehaviour
     public float strongAttackDuration = 1.5f;
 
     public int score = 0;
+    public TMP_Text scoreText;
 
     void Update()
     {
+        UpdateScoreUI();
+
         if (Input.GetKeyDown(strongSuctionKey))
         {
             StartCoroutine(StrongSuctionCoroutine()); // 开始强吸附
@@ -40,9 +44,17 @@ public class Vacuum : MonoBehaviour
                 {
                     Destroy(bubble.gameObject); // 吸收泡泡
                     score++;
-                    Debug.Log("当前得分: " + score);
+                    UpdateScoreUI();
                 }
             }
+        }
+    }
+
+    void UpdateScoreUI()
+    {
+        if(scoreText != null)
+        {
+            scoreText.text = "Score: " + score.ToString();
         }
     }
 
