@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,10 +19,16 @@ public class PlayerController : MonoBehaviour
     private bool isInvincible = false; // 是否处于无敌状态
     private SpriteRenderer spriteRenderer; // 角色的 SpriteRenderer
 
+    private float life = 10f; // 生命值
+    public TMP_Text lifeText; // 生命值 UI 文本（TextMeshPro 组件）
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>(); // 获取 Animator 组件
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        UpdateLifeUI(); // 初始化 UI
     }
 
     void Update()
@@ -50,12 +57,15 @@ public class PlayerController : MonoBehaviour
             currentSpeed *= sprintMultiplier;
         }
 
-        // 设置角色的速度（强攻击时不改变速度）
+        // 计算角色的移动
         if (!isStrongAttacking)
         {
             Vector2 moveVelocity = new Vector2(moveInputX * currentSpeed, moveInputY * currentSpeed);
-            rb.linearVelocity = moveVelocity;
+            rb.linearVelocity = moveVelocity; // 这里修正 `linearVelocity` -> `velocity`
         }
+
+        // 限制角色移动在摄像机视野内
+        ClampPlayerPosition();
 
         // 翻转角色（仅针对水平移动）
         if (moveInputX > 0)
@@ -63,6 +73,30 @@ public class PlayerController : MonoBehaviour
         else if (moveInputX < 0)
             transform.localScale = new Vector3(-1, 1, 1);
     }
+
+    void ClampPlayerPosition() // 不行
+    {
+        if (Camera.main == null) return; // 防止空引用异常
+
+        // 获取摄像机的边界
+        Vector3 minBounds = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)); // 左下角
+        Vector3 maxBounds = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0)); // 右上角
+
+        // 获取角色的碰撞体尺寸
+        float playerWidth = GetComponent<Collider2D>().bounds.extents.x;
+        float playerHeight = GetComponent<Collider2D>().bounds.extents.y;
+
+        // 获取角色当前位置
+        Vector3 playerPos = transform.position;
+
+        // 限制角色移动范围（考虑角色大小）
+        playerPos.x = Mathf.Clamp(playerPos.x, minBounds.x + playerWidth, maxBounds.x - playerWidth);
+        playerPos.y = Mathf.Clamp(playerPos.y, minBounds.y + playerHeight, maxBounds.y - playerHeight);
+
+        // 更新角色位置
+        transform.position = playerPos;
+    }
+
 
     void HandleAttack()
     {
@@ -85,11 +119,8 @@ public class PlayerController : MonoBehaviour
 
             // 保存当前速度并冻结角色
             originalVelocity = rb.linearVelocity;
-            //rb.linearVelocity = Vector2.zero;
-            //rb.isKinematic = true; // 暂停物理模拟
             rb.linearVelocity = Vector2.zero;
-            rb.simulated = false; // 暂停物理模拟，但保留碰撞检测
-            gameObject.GetComponent<Collider2D>().enabled = true; // 确保碰撞检测不被禁用
+            rb.bodyType = RigidbodyType2D.Kinematic; // 暂停物理模拟
 
             animator.Play("strongattack_anim"); // 播放强攻击动画
 
@@ -103,9 +134,7 @@ public class PlayerController : MonoBehaviour
         isStrongAttacking = false; // 解除强攻击状态
 
         // 恢复物理模拟和原速度
-        //rb.isKinematic = false;
-        rb.simulated = true;
-        //rb.linearVelocity = originalVelocity;
+        rb.bodyType = RigidbodyType2D.Dynamic;
         rb.linearVelocity = originalVelocity;
     }
 
@@ -131,13 +160,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     public void TakeDamage()
     {
+        life--;
+        Debug.Log("当前生命值: " + life);
+        UpdateLifeUI(); // 更新 TMP 显示
+
         if (isInvincible)
             return; // 如果无敌状态，不执行受伤逻辑
 
         // 开启无敌状态
         StartCoroutine(InvincibilityCoroutine());
+    }
+
+    void UpdateLifeUI()
+    {
+        if (lifeText != null)
+        {
+            lifeText.text = "Current life: " + life.ToString(); // 更新 TMP 文本
+        }
     }
 
     private IEnumerator InvincibilityCoroutine()
@@ -157,4 +199,6 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.enabled = true; // 确保最后是可见的
         isInvincible = false;
     }
+
+
 }
