@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class Metoer : MonoBehaviour
+public class Meteor : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
+        // 检测是否碰撞到角色
+        if (collision.CompareTag("Player"))
+        {
+            // 销毁流星
+            Destroy(gameObject);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            // 调用角色的受伤逻辑
+            PlayerController player = collision.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.TakeDamage(); // 触发角色的受伤逻辑
+            }
+        }
     }
 }
