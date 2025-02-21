@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking = false;      // 标志普通攻击状态
 
     private Vector2 originalVelocity; // 用于保存强攻击前的速度
+
+    public float invincibilityDuration = 1.0f;
+    public float flashInterval = 0.1f; // 闪烁的间隔时间
+    private bool isInvincible = false; // 是否处于无敌状态
+    private SpriteRenderer spriteRenderer; // 角色的 SpriteRenderer
 
     void Start()
     {
