@@ -124,4 +124,31 @@ public class PlayerController : MonoBehaviour
             animator.Play("idle_anim"); // 播放静止动画
         }
     }
+
+    public void TakeDamage()
+    {
+        if (isInvincible)
+            return; // 如果无敌状态，不执行受伤逻辑
+
+        // 开启无敌状态
+        StartCoroutine(InvincibilityCoroutine());
+    }
+
+    private IEnumerator InvincibilityCoroutine()
+    {
+        isInvincible = true;
+
+        // 开始闪烁
+        float elapsedTime = 0;
+        while (elapsedTime < invincibilityDuration)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled; // 切换可见性
+            elapsedTime += flashInterval;
+            yield return new WaitForSeconds(flashInterval);
+        }
+
+        // 恢复正常状态
+        spriteRenderer.enabled = true; // 确保最后是可见的
+        isInvincible = false;
+    }
 }
