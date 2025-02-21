@@ -79,8 +79,11 @@ public class PlayerController : MonoBehaviour
 
             // 保存当前速度并冻结角色
             originalVelocity = rb.linearVelocity;
+            //rb.linearVelocity = Vector2.zero;
+            //rb.isKinematic = true; // 暂停物理模拟
             rb.linearVelocity = Vector2.zero;
-            rb.isKinematic = true; // 暂停物理模拟
+            rb.simulated = false; // 暂停物理模拟，但保留碰撞检测
+            gameObject.GetComponent<Collider2D>().enabled = true; // 确保碰撞检测不被禁用
 
             animator.Play("strongattack_anim"); // 播放强攻击动画
 
@@ -94,7 +97,9 @@ public class PlayerController : MonoBehaviour
         isStrongAttacking = false; // 解除强攻击状态
 
         // 恢复物理模拟和原速度
-        rb.isKinematic = false;
+        //rb.isKinematic = false;
+        rb.simulated = true;
+        //rb.linearVelocity = originalVelocity;
         rb.linearVelocity = originalVelocity;
     }
 
